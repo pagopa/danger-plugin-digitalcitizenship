@@ -1,0 +1,20 @@
+{
+  "name": "danger-plugin-digitalcitizenship",
+  "version": "0.0.1",
+  "description": "Shared rules for DangerJS, used in the Digital Citizenship projects",
+  "author": "Federico Feroldi <federico@teamdigitale.governo.it>",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc"
+  },
+  "devDependencies": {
+    "danger": "^3.1.7",
+    "typescript": "^2.7.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/teamdigitale/danger-plugin-digitalcitizenship.git"
+  }
+}
