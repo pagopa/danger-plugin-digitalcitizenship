@@ -6,16 +6,16 @@ export declare function message(message: string): void
 export declare function warn(message: string): void
 export declare function fail(message: string): void
 export declare function markdown(message: string): void
+export declare function schedule<T>(asyncFunction: Promise<T>): void;
 
-function checkPivotalStoryRef(message: string): boolean {
-  // see https://www.pivotaltracker.com/help/articles/githubs_service_hook_for_tracker/
-  return message.match(/^\[#\d+(,#\d+)*\]\s.+/) !== null;
-}
+import { getPivotalStories, getPivotalStoryIDs, checkWIP, getEmojiForStoryType } from "./utils";
 
 export default function checkDangers() {
+  const prTitle = danger.github.pr.title;
+  const pivotalStories = getPivotalStoryIDs(prTitle);
 
   // PR should reference a pivotal story
-  if (!checkPivotalStoryRef(danger.github.pr.title)) {
+  if (pivotalStories.length === 0) {
     warn(
       "Please include a Pivotal story at the beginning of the PR title (see below)."
     );
@@ -26,6 +26,20 @@ export default function checkDangers() {
   * multiple stories: \`[#123456,#123457,#123458] my PR title\`
 
     `);
+  } else {
+    const p = getPivotalStories(pivotalStories).then(stories => {
+      markdown(`
+## Affected stories
+
+${stories.map(s => `  * ${getEmojiForStoryType(s.story_type)} [#${s.id}](${s.url}): ${s.name}`)}\n`);
+    })
+    schedule(p);
+  }
+
+  if(checkWIP(prTitle)) {
+    warn(
+      "Remember to fix the PR title by removing WIP wording when ready"
+    );
   }
 
   // No PR is too small to include a description of why you made a change

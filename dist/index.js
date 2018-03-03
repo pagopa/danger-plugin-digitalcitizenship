@@ -1,12 +1,11 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-function checkPivotalStoryRef(message) {
-    // see https://www.pivotaltracker.com/help/articles/githubs_service_hook_for_tracker/
-    return message.match(/^\[#\d+(,#\d+)*\]\s.+/) !== null;
-}
+const utils_1 = require("./utils");
 function checkDangers() {
+    const prTitle = danger.github.pr.title;
+    const pivotalStories = utils_1.getPivotalStoryIDs(prTitle);
     // PR should reference a pivotal story
-    if (!checkPivotalStoryRef(danger.github.pr.title)) {
+    if (pivotalStories.length === 0) {
         warn("Please include a Pivotal story at the beginning of the PR title (see below).");
         markdown(`
   Example of PR titles that include pivotal stories:
@@ -15,6 +14,18 @@ function checkDangers() {
   * multiple stories: \`[#123456,#123457,#123458] my PR title\`
 
     `);
+    }
+    else {
+        const p = utils_1.getPivotalStories(pivotalStories).then(stories => {
+            markdown(`
+## Affected stories
+
+${stories.map(s => `  * ${utils_1.getEmojiForStoryType(s.story_type)} [#${s.id}](${s.url}): ${s.name}`)}\n`);
+        });
+        schedule(p);
+    }
+    if (utils_1.checkWIP(prTitle)) {
+        warn("Remember to fix the PR title by removing WIP wording when ready");
     }
     // No PR is too small to include a description of why you made a change
     if (danger.github.pr.body.length < 10) {

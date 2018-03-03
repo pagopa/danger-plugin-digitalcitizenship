@@ -16,5 +16,8 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/teamdigitale/danger-plugin-digitalcitizenship.git"
+  },
+  "dependencies": {
+    "pivotaljs": "^1.0.3"
   }
 }
