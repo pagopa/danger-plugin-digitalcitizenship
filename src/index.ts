@@ -47,4 +47,16 @@ ${stories.map(s => `  * ${getEmojiForStoryType(s.story_type)} [#${s.id}](${s.url
     warn("Please include a description of your PR changes.");
   }
 
+  // Check if package.json changed but not yarn.lock
+  const packageJsonChanged = danger.git.modified_files.find(
+    file => file === "package.json"
+  );
+  const yarnLockChanged = danger.git.modified_files.find(
+    file => file === "yarn.lock"
+  );
+  if (packageJsonChanged && !yarnLockChanged) {
+    const message = "Changes were made to package.json, but not to yarn.lock";
+    const idea = "Perhaps you need to run `yarn install`?";
+    warn(`${message} - <i>${idea}</i>`);
+  }
 }
