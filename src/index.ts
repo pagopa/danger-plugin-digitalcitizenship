@@ -42,6 +42,16 @@ ${stories.map(s => `  * ${getEmojiForStoryType(s.story_type)} [#${s.id}](${s.url
     );
   }
 
+  // Check if changes were added to the CHANGELOG
+  const changelogChanged = danger.git.modified_files.find(
+    file => file === "CHANGELOG.md"
+  );
+  if (!changelogChanged) {
+    const message = "CHANGELOG.md is unmodified";
+    const idea = "Remember to add any sensible change to the CHANGELOG";
+    warn(`${message} - <i>${idea}</i>`);
+  }
+  
   // No PR is too small to include a description of why you made a change
   if (danger.github.pr.body.length < 10) {
     warn("Please include a description of your PR changes.");
