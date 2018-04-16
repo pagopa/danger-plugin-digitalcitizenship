@@ -1,3 +1,5 @@
+import yarn from "danger-plugin-yarn";
+
 // Provides dev-time typing structure for  `danger` - doesn't affect runtime.
 import { DangerDSLType } from "../node_modules/danger/distribution/dsl/DangerDSL"
 declare var danger: DangerDSLType
@@ -14,7 +16,7 @@ export default function checkDangers() {
   const prTitle = danger.github.pr.title;
   const pivotalStories = getPivotalStoryIDs(prTitle);
 
-  // PR should reference a pivotal story
+  // Pull Requests should reference a Pivotal Tracker story
   if (pivotalStories.length === 0) {
     warn(
       "Please include a Pivotal story at the beginning of the PR title (see below)."
@@ -36,6 +38,7 @@ ${stories.map(s => `  * ${getEmojiForStoryType(s.story_type)} [#${s.id}](${s.url
     schedule(p);
   }
 
+  // Adds a remainder to remove the "WIP" wording
   if(checkWIP(prTitle)) {
     warn(
       "Remember to fix the PR title by removing WIP wording when ready"
@@ -47,16 +50,8 @@ ${stories.map(s => `  * ${getEmojiForStoryType(s.story_type)} [#${s.id}](${s.url
     warn("Please include a description of your PR changes.");
   }
 
-  // Check if package.json changed but not yarn.lock
-  const packageJsonChanged = danger.git.modified_files.find(
-    file => file === "package.json"
-  );
-  const yarnLockChanged = danger.git.modified_files.find(
-    file => file === "yarn.lock"
-  );
-  if (packageJsonChanged && !yarnLockChanged) {
-    const message = "Changes were made to package.json, but not to yarn.lock";
-    const idea = "Perhaps you need to run `yarn install`?";
-    warn(`${message} - <i>${idea}</i>`);
-  }
+  // Permorm sanity checks on yarn.lock
+  // See https://www.npmjs.com/package/danger-plugin-yarn
+  schedule(yarn());
+
 }
