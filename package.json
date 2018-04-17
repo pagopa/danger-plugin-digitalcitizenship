@@ -14,7 +14,6 @@
   },
   "devDependencies": {
     "danger": "^3.1.7",
-    "danger-plugin-yarn": "^1.2.1",
     "typescript": "^2.7.0"
   },
   "repository": {
@@ -22,6 +21,7 @@
     "url": "https://github.com/teamdigitale/danger-plugin-digitalcitizenship.git"
   },
   "dependencies": {
-    "pivotaljs": "^1.0.3"
+    "pivotaljs": "^1.0.3",
+    "danger-plugin-yarn": "^1.2.1"
   }
 }
