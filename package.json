@@ -13,6 +13,7 @@
     "postversion": "git push && git push --tags"
   },
   "devDependencies": {
+    "@types/node": "^9.6.6",
     "danger": "^3.1.7",
     "typescript": "^2.7.0"
   },
@@ -21,7 +22,7 @@
     "url": "https://github.com/teamdigitale/danger-plugin-digitalcitizenship.git"
   },
   "dependencies": {
-    "pivotaljs": "^1.0.3",
-    "danger-plugin-yarn": "^1.2.1"
+    "danger-plugin-yarn": "^1.2.1",
+    "pivotaljs": "^1.0.3"
   }
 }
