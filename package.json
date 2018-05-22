@@ -1,6 +1,6 @@
 {
   "name": "danger-plugin-digitalcitizenship",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "Shared rules for DangerJS, used in the Digital Citizenship projects",
   "author": "Federico Feroldi <federico@teamdigitale.governo.it>",
   "license": "MIT",

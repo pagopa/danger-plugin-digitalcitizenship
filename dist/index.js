@@ -21,7 +21,7 @@ function checkDangers() {
             markdown(`
 ## Affected stories
 
-${stories.map(s => `  * ${utils_1.getEmojiForStoryType(s.story_type)} [#${s.id}](${s.url}): ${s.name}`)}\n`);
+${stories.map(s => `  * ${utils_1.getEmojiForStoryType(s.story_type)} [#${s.id}](${s.url}): ${s.name}`).join("\n")}\n`);
         });
         schedule(p);
     }
