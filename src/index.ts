@@ -12,6 +12,8 @@ export declare function schedule<T>(asyncFunction: Promise<T>): void;
 
 import { getPivotalStories, getPivotalStoryIDs, checkWIP, getEmojiForStoryType } from "./utils";
 
+const MAX_LINES_OF_CODE = 250;
+
 export default function checkDangers() {
   const prTitle = danger.github.pr.title;
   const pivotalStories = getPivotalStoryIDs(prTitle);
@@ -41,17 +43,30 @@ ${stories.map(s => `  * ${getEmojiForStoryType(s.story_type)} [#${s.id}](${s.url
   // Adds a remainder to remove the "WIP" wording
   if(checkWIP(prTitle)) {
     warn(
-      "Remember to fix the PR title by removing WIP wording when ready"
+      "WIP keyword in PR title is deprecated, please create a Draft PR instead."
     );
   }
 
   // No PR is too small to include a description of why you made a change
   if (danger.github.pr.body.length < 10) {
-    warn("Please include a description of your PR changes.");
+    warn("Please include a description in the Pull Request.");
   }
 
-  // Permorm sanity checks on yarn.lock
+  // Perform sanity checks on yarn.lock
   // See https://www.npmjs.com/package/danger-plugin-yarn
   schedule(yarn());
 
+  // Warn if npm lock files have been added
+  const npmLockFiles = danger.git.fileMatch("package-lock.json", "npm-shrinkwrap.json");
+  if(npmLockFiles.edited) {
+    const npmLockFilesPaths = npmLockFiles.getKeyedPaths().edited.join(", ");
+    warn(
+      `NPM lock files [${npmLockFilesPaths}] have been added or modified, this is usually an error since we use YARN for package management.`
+    );
+  }
+
+  const linesOfCodeChanged = danger.github.pr.additions + danger.github.pr.deletions;
+  if(linesOfCodeChanged > MAX_LINES_OF_CODE) {
+    warn(`This PR changes a total of ${linesOfCodeChanged} LOCs, that is more than a reasonable size of ${MAX_LINES_OF_CODE}. Consider splitting the pull request into smaller ones.`)
+  }
 }
