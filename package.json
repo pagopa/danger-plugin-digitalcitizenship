@@ -13,7 +13,7 @@
     "postversion": "git push && git push --tags"
   },
   "devDependencies": {
-    "@types/node": "^9.6.6",
+    "@types/node": "^8.9.4",
     "danger": "^8.0.0",
     "typescript": "^3.5.1"
   },
@@ -24,5 +24,8 @@
   "dependencies": {
     "danger-plugin-yarn": "^1.2.1",
     "pivotaljs": "^1.0.3"
+  },
+  "peerDependencies": {
+    "danger": "^8.0.0"
   }
 }
