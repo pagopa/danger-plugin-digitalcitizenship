@@ -13,7 +13,7 @@
     "postversion": "git push && git push --tags"
   },
   "devDependencies": {
-    "@types/node": "^8.9.4",
+    "@types/node": "^9.6.6",
     "danger": "^8.0.0",
     "typescript": "^3.5.1"
   },
