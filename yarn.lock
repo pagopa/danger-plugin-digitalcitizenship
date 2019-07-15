@@ -374,10 +374,10 @@ danger-plugin-yarn@^1.2.1:
     node-fetch "^1.7.1"
     semver "^5.4.1"
 
-danger@^8.0.0:
-  version "8.0.0"
-  resolved "https://registry.yarnpkg.com/danger/-/danger-8.0.0.tgz#9809d17e6213c05c3cc2c4e0573f707acc3f5402"
-  integrity sha512-S3Q9ukawJUxA2SRlfzLtP/WzGr2jiKqkRi3pX/Scbfm0nLh/KNQLMsdgYHhJwECCe5Vt69iy7b2zMMga4rFNrQ==
+danger@^9.1.0:
+  version "9.1.0"
+  resolved "https://registry.yarnpkg.com/danger/-/danger-9.1.0.tgz#f831facd984c2706162d395c0abccf84480728b7"
+  integrity sha512-bZyMPmYQOIZp0EFMQNGruIgaJGfICRtF5fZTnakNekmeGveSfKw6BrjfjhkC3QUSppiIKkS68Opc9vsD3oJA5w==
   dependencies:
     "@babel/polyfill" "^7.2.5"
     "@octokit/rest" "^16.14.1"
@@ -385,7 +385,7 @@ danger@^8.0.0:
     commander "^2.18.0"
     debug "^4.1.1"
     get-stdin "^6.0.0"
-    gitlab "^6.0.0"
+    gitlab "~6.0.0"
     http-proxy-agent "^2.1.0"
     https-proxy-agent "^2.2.1"
     hyperlinker "^1.0.0"
@@ -720,10 +720,10 @@ git-config-path@^1.0.1:
     fs-exists-sync "^0.1.0"
     homedir-polyfill "^1.0.0"
 
-gitlab@^6.0.0:
-  version "6.3.4"
-  resolved "https://registry.yarnpkg.com/gitlab/-/gitlab-6.3.4.tgz#b6bbe9fb2efd108ec6516700e3fe3414ac3333b5"
-  integrity sha512-1BG1W/aUu2lAYiuh94FTtAP31uLnw1FHBsXxA+ovVxQxUOR0vvrFVlFM+xV4lT27kh/WQPQbuo+Wyfd2QvfyQg==
+gitlab@~6.0.0:
+  version "6.0.0"
+  resolved "https://registry.yarnpkg.com/gitlab/-/gitlab-6.0.0.tgz#7bd44bf57dcb6b1231c70a52ea9b83934e6c1539"
+  integrity sha512-/0KE/Un0Hg/CDTtiYfC1Z4lkuHhkSmC3JjkKy4VsCgTb51rTtOfk7NGspyM+wTIgEPd6cE061Pu5m4a5ao01Ow==
   dependencies:
     form-data "^2.3.3"
     humps "^2.0.1"
