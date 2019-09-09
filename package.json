@@ -14,7 +14,7 @@
   },
   "devDependencies": {
     "@types/node": "^8.9.4",
-    "danger": "^8.0.0",
+    "danger": "^9.2.0",
     "typescript": "^3.5.1"
   },
   "repository": {
@@ -26,6 +26,6 @@
     "pivotaljs": "^1.0.3"
   },
   "peerDependencies": {
-    "danger": "^8.0.0"
+    "danger": "^9.2.0"
   }
 }
