@@ -69,4 +69,15 @@ ${stories.map(s => `  * ${getEmojiForStoryType(s.story_type)} [#${s.id}](${s.url
   if(linesOfCodeChanged > MAX_LINES_OF_CODE) {
     warn(`This PR changes a total of ${linesOfCodeChanged} LOCs, that is more than a reasonable size of ${MAX_LINES_OF_CODE}. Consider splitting the pull request into smaller ones.`)
   }
+
+  // Warn if we spelled pagoPA wrong :)
+  const markdownFiles = danger.git.modified_files.filter(f => f.endsWith(".md"));
+  markdownFiles.forEach(async (f) => {
+    const diff = await danger.git.diffForFile(f);
+
+    const matches = diff?.added?.match(/PagoPA|Pagopa|PagoPa|pagopa/);
+    if (matches) {
+      warn(`${f}: expected spelling "pagoPA", found "${matches[0]}". Please use "pagoPA" unless you're referring to "PagoPA S.p.A."`);
+    }
+  });
 }
