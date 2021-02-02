@@ -1,11 +1,15 @@
 {
-  "name": "danger-plugin-digitalcitizenship",
+  "name": "@pagopa/danger-custom-rules",
   "version": "1.0.0",
   "description": "Shared rules for DangerJS, used in the Digital Citizenship projects",
   "author": "Federico Feroldi <federico@teamdigitale.governo.it>",
   "license": "MIT",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "files": [
+    "dist/**/*",
+    "Dangerfile.ts"
+  ],
   "scripts": {
     "prepublish": "npm run build",
     "build": "tsc",
