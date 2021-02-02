@@ -1,6 +1,6 @@
 {
   "name": "@pagopa/danger-custom-rules",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "Shared rules for DangerJS, used in the Digital Citizenship projects",
   "author": "Federico Feroldi <federico@teamdigitale.governo.it>",
   "license": "MIT",
