@@ -1,0 +1,27 @@
+# Azure DevOps pipeline to build, check source codes and run tests.
+
+# Automatically triggered on PR
+# https://docs.microsoft.com/en-us/azure/devops/pipelines/yaml-schema?view=azure-devops&tabs=schema%2Cparameter-schema#pr-trigger
+trigger: none
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+resources:
+  repositories:
+    - repository: pagopaCommons
+      type: github
+      name: pagopa/azure-pipeline-templates
+      ref: refs/tags/v8
+      endpoint: 'pagopa'
+
+stages:
+  - stage: Build
+    dependsOn: []
+    jobs:
+      - job: make_build
+        steps:
+          - template: templates/node-job-setup/template.yml@pagopaCommons
+          - script: |
+              yarn build
+            displayName: 'Build'
