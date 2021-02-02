@@ -9,8 +9,8 @@
   "scripts": {
     "prepublish": "npm run build",
     "build": "tsc",
-    "version": "npm run build && git add -A dist",
-    "postversion": "git push && git push --tags"
+    "preversion": "auto-changelog  --config .auto-changelog.json --unreleased --commit-limit false --stdout --template preview.hbs",
+    "version": "auto-changelog -p --config .auto-changelog.json --unreleased && git add CHANGELOG.md"
   },
   "devDependencies": {
     "@types/node": "^8.9.4",
@@ -22,6 +22,7 @@
     "url": "https://github.com/teamdigitale/danger-plugin-digitalcitizenship.git"
   },
   "dependencies": {
+    "auto-changelog": "^2.2.1",
     "danger-plugin-yarn": "^1.2.1",
     "pivotaljs": "^1.0.3"
   },
