@@ -21,7 +21,7 @@ stages:
     jobs:
       - job: make_build
         steps:
-          - template: templates/node-job-setup/template.yml@pagopaCommons
+          - template: templates/node-job-setup/template.yaml@pagopaCommons
           - script: |
               yarn build
             displayName: 'Build'
