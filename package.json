@@ -15,7 +15,7 @@
     "version": "auto-changelog -p --config .auto-changelog.json --unreleased && git add CHANGELOG.md"
   },
   "devDependencies": {
-    "@types/node": "^8.9.4",
+    "@types/node": "^9.6.6",
     "danger": "^8.0.0",
     "typescript": "^3.5.1"
   },
