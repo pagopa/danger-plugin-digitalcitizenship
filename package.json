@@ -17,7 +17,7 @@
   "devDependencies": {
     "@types/node": "^8.9.4",
     "danger": "^8.0.0",
-    "typescript": "^3.5.1"
+    "typescript": "^3.8.2"
   },
   "repository": {
     "type": "git",
