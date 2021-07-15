@@ -2,6 +2,7 @@ import yarn from "danger-plugin-yarn";
 
 // Provides dev-time typing structure for  `danger` - doesn't affect runtime.
 import { DangerDSLType } from "../node_modules/danger/distribution/dsl/DangerDSL"
+import { JiraIssueTypeName } from "./jira";
 declare var danger: DangerDSLType
 
 export declare function message(message: string): void
@@ -10,32 +11,33 @@ export declare function fail(message: string): void
 export declare function markdown(message: string): void
 export declare function schedule<T>(asyncFunction: Promise<T>): void;
 
-import { getPivotalStories, getPivotalStoryIDs, checkWIP, getEmojiForStoryType } from "./utils";
+import { getJiraIssues, getJiraIDs, checkWIP, getEmojiForIssueType } from "./utils";
 
 const MAX_LINES_OF_CODE = 250;
+const JIRA_BROWSE_URL = "https://pagopa.atlassian.net/browse/"
 
 export default function checkDangers() {
   const prTitle = danger.github.pr.title;
-  const pivotalStories = getPivotalStoryIDs(prTitle);
+  const jiraIds = getJiraIDs(prTitle);
 
-  // Pull Requests should reference a Pivotal Tracker story
-  if (pivotalStories.length === 0) {
+  // Pull Requests should reference a Jira Issue
+  if (jiraIds.length === 0) {
     warn(
-      "Please include a Pivotal story at the beginning of the PR title (see below)."
+      "Please include a Jira Ticket at the beginning of the PR title (see below)."
     );
     markdown(`
-  Example of PR titles that include pivotal stories:
+  Example of PR titles that include Jira tickets:
 
-  * single story: \`[#123456] my PR title\`
-  * multiple stories: \`[#123456,#123457,#123458] my PR title\`
+  * single ticket: \`[#ES-234] my PR title\`
+  * multiple tickets: \`[#ES-234,#ES-235,#ES-236] my PR title\`
 
     `);
   } else {
-    const p = getPivotalStories(pivotalStories).then(stories => {
+    const p = getJiraIssues(jiraIds).then(tickets => {
       markdown(`
-## Affected stories
+## Affected Ticket
 
-${stories.map(s => `  * ${getEmojiForStoryType(s.story_type)} [#${s.id}](${s.url}): ${s.name}`).join("\n")}\n`);
+${tickets.map(s => `  * ${JiraIssueTypeName.is(s.fields.issuetype.name) ? getEmojiForIssueType(s.fields.issuetype.name) : s.fields.issuetype.name} [#${s.fields.key}](${JIRA_BROWSE_URL}${s.fields.key}): ${s.fields.summary}`).join("\n")}\n`);
     })
     schedule(p);
   }
