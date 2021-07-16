@@ -5,7 +5,7 @@ import { taskEither } from "fp-ts/lib/TaskEither";
 import { identity } from "fp-ts/lib/function";
 
 /**
- * Extract the IDs of the Pivotal stories referenced in the message
+ * Extract the IDs of the JIRA ticket referenced in the message
  * see https://www.pivotaltracker.com/help/articles/githubs_service_hook_for_tracker/
  */
 export function getJiraIDs(message: string): ReadonlyArray<string> {
