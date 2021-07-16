@@ -9,6 +9,9 @@ import { identity } from "fp-ts/lib/function";
  * see https://www.pivotaltracker.com/help/articles/githubs_service_hook_for_tracker/
  */
 export function getJiraIDs(message: string): ReadonlyArray<string> {
+  // This regex matches all strings of type:
+  // - [#ES-234] PR Title (for a single linked issue)
+  // - [#ES-234,#ES-235,#ES-236] PR Title (for multiple linked issues)
   const matches = message.match(/^\[(#\D+\d+(,#\d+)*)\]\s.+/);
   if(matches) {
     return matches[1]
