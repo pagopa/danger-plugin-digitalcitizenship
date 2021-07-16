@@ -1,28 +1,30 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const danger_plugin_yarn_1 = require("danger-plugin-yarn");
+const jira_1 = require("./jira");
 const utils_1 = require("./utils");
 const MAX_LINES_OF_CODE = 250;
+const JIRA_BROWSE_URL = "https://pagopa.atlassian.net/browse/";
 function checkDangers() {
     const prTitle = danger.github.pr.title;
-    const pivotalStories = utils_1.getPivotalStoryIDs(prTitle);
-    // Pull Requests should reference a Pivotal Tracker story
-    if (pivotalStories.length === 0) {
-        warn("Please include a Pivotal story at the beginning of the PR title (see below).");
+    const jiraIds = utils_1.getJiraIDs(prTitle);
+    // Pull Requests should reference a Jira Issue
+    if (jiraIds.length === 0) {
+        warn("Please include a Jira Ticket at the beginning of the PR title (see below).");
         markdown(`
-  Example of PR titles that include pivotal stories:
+  Example of PR titles that include Jira tickets:
 
-  * single story: \`[#123456] my PR title\`
-  * multiple stories: \`[#123456,#123457,#123458] my PR title\`
+  * single ticket: \`[#ES-234] my PR title\`
+  * multiple tickets: \`[#ES-234,#ES-235,#ES-236] my PR title\`
 
     `);
     }
     else {
-        const p = utils_1.getPivotalStories(pivotalStories).then(stories => {
+        const p = utils_1.getJiraIssues(jiraIds).then(tickets => {
             markdown(`
-## Affected stories
+## Affected Ticket
 
-${stories.map(s => `  * ${utils_1.getEmojiForStoryType(s.story_type)} [#${s.id}](${s.url}): ${s.name}`).join("\n")}\n`);
+${tickets.map(s => `  * ${jira_1.JiraIssueTypeName.is(s.fields.issuetype.name) ? utils_1.getEmojiForIssueType(s.fields.issuetype.name) : s.fields.issuetype.name} [#${s.fields.key}](${JIRA_BROWSE_URL}${s.fields.key}): ${s.fields.summary}`).join("\n")}\n`);
         });
         schedule(p);
     }

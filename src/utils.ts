@@ -1,11 +1,18 @@
 import Pivotal = require("pivotaljs");
+import { getJiraIssue, JiraIssueResponse, JiraIssueTypeName } from "./jira";
+import { array } from "fp-ts/lib/Array";
+import { taskEither } from "fp-ts/lib/TaskEither";
+import { identity } from "fp-ts/lib/function";
 
 /**
- * Extract the IDs of the Pivotal stories referenced in the message
+ * Extract the IDs of the JIRA ticket referenced in the message
  * see https://www.pivotaltracker.com/help/articles/githubs_service_hook_for_tracker/
  */
-export function getPivotalStoryIDs(message: string): ReadonlyArray<string> {
-  const matches = message.match(/^\[(#\d+(,#\d+)*)\]\s.+/);
+export function getJiraIDs(message: string): ReadonlyArray<string> {
+  // This regex matches all strings of type:
+  // - [#ES-234] PR Title (for a single linked issue)
+  // - [#ES-234,#ES-235,#ES-236] PR Title (for multiple linked issues)
+  const matches = message.match(/^\[(#\D+\d+(,#\d+)*)\]\s.+/);
   if(matches) {
     return matches[1]
       .split(",")
@@ -14,38 +21,26 @@ export function getPivotalStoryIDs(message: string): ReadonlyArray<string> {
     return [];
   }
 }
-
-/**
- * Fetches details about a Pivotal story
- */
-export function getPivotalStory(id: string): Promise<Pivotal.Story> {
-  const pivotal = new Pivotal();
-  return new Promise((res, rej) => {
-    pivotal.getStory(id, (err, story) => {
-      if(err) {
-        return rej(err);
-      }
-      res(story);
-    })
-  });
-}
-
 /**
  * Fetches details about an array of Pivotal stories
  */
-export function getPivotalStories(ids: ReadonlyArray<string>): Promise<ReadonlyArray<Pivotal.Story>> {
-  return Promise.all(ids.map(getPivotalStory));
+export function getJiraIssues(ids: ReadonlyArray<string>): Promise<ReadonlyArray<JiraIssueResponse>> {
+  return array.sequence(taskEither)(
+    ids.map(id => getJiraIssue(id))
+  )
+  .getOrElse([])
+  .run();
 }
 
-const STORY_EMOJIS = {
-  "feature": "🌟",
-  "bug": "🐞",
-  "chore": "⚙️",
-  "release": "🏁"
+const TICKET_EMOJIS = {
+  "Story": "🌟",
+  "Bug": "🐞",
+  "Task": "⚙️",
+  "Epic": "🏁"
 };
 
-export function getEmojiForStoryType(t: Pivotal.StoryType): string {
-  return STORY_EMOJIS[t] || "";
+export function getEmojiForIssueType(t: JiraIssueTypeName) {
+  return TICKET_EMOJIS[t] || "";
 }
 
 /**
