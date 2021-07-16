@@ -11,12 +11,15 @@ exports.JiraIssueResponse = t.exact(t.interface({
     fields: t.interface({
         key: t.string,
         summary: t.string,
-        issuetype: t.union([t.interface({
-                name: t.union([t.literal("Story"), t.literal("Epic"), t.literal("Bug"), t.literal("Task")])
-            }), t.interface({
+        issuetype: t.union([
+            t.interface({
+                name: exports.JiraIssueTypeName
+            }),
+            t.interface({
                 name: t.string,
                 subtask: t.literal(true)
-            })]),
+            })
+        ]),
         project: t.interface({
             name: t.string
         })

@@ -16,7 +16,7 @@
   },
   "devDependencies": {
     "@types/jira-client": "^6.21.1",
-    "@types/node": "^8.9.4",
+    "@types/node": "^12.18.0",
     "danger": "^8.0.0",
     "typescript": "^3.5.1"
   },
