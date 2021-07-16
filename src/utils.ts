@@ -27,10 +27,9 @@ export function getJiraIDs(message: string): ReadonlyArray<string> {
 export function getJiraIssues(ids: ReadonlyArray<string>): Promise<ReadonlyArray<JiraIssueResponse>> {
   return array.sequence(taskEither)(
     ids.map(id => getJiraIssue(id))
-  ).fold<ReadonlyArray<JiraIssueResponse>>(
-    () => [],
-    identity
-  ).run();
+  )
+  .getOrElse([])
+  .run();
 }
 
 const TICKET_EMOJIS = {
