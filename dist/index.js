@@ -5,7 +5,7 @@ const utils_1 = require("./utils");
 const MAX_LINES_OF_CODE = 250;
 function checkDangers() {
     const prTitle = danger.github.pr.title;
-    const pivotalStories = utils_1.getPivotalStoryIDs(prTitle);
+    const pivotalStories = (0, utils_1.getPivotalStoryIDs)(prTitle);
     // Pull Requests should reference a Pivotal Tracker story
     if (pivotalStories.length === 0) {
         warn("Please include a Pivotal story at the beginning of the PR title (see below).");
@@ -18,16 +18,16 @@ function checkDangers() {
     `);
     }
     else {
-        const p = utils_1.getPivotalStories(pivotalStories).then(stories => {
+        const p = (0, utils_1.getPivotalStories)(pivotalStories).then(stories => {
             markdown(`
 ## Affected stories
 
-${stories.map(s => `  * ${utils_1.getEmojiForStoryType(s.story_type)} [#${s.id}](${s.url}): ${s.name}`).join("\n")}\n`);
+${stories.map(s => `  * ${(0, utils_1.getEmojiForStoryType)(s.story_type)} [#${s.id}](${s.url}): ${s.name}`).join("\n")}\n`);
         });
         schedule(p);
     }
     // Adds a remainder to remove the "WIP" wording
-    if (utils_1.checkWIP(prTitle)) {
+    if ((0, utils_1.checkWIP)(prTitle)) {
         warn("WIP keyword in PR title is deprecated, please create a Draft PR instead.");
     }
     // No PR is too small to include a description of why you made a change
@@ -36,7 +36,7 @@ ${stories.map(s => `  * ${utils_1.getEmojiForStoryType(s.story_type)} [#${s.id}]
     }
     // Perform sanity checks on yarn.lock
     // See https://www.npmjs.com/package/danger-plugin-yarn
-    schedule(danger_plugin_yarn_1.default());
+    schedule((0, danger_plugin_yarn_1.default)());
     // Warn if npm lock files have been added
     const npmLockFiles = danger.git.fileMatch("package-lock.json", "npm-shrinkwrap.json");
     if (npmLockFiles.edited) {
